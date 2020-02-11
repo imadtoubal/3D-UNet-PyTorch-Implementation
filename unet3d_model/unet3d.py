@@ -16,14 +16,14 @@ class UnetModel(nn.Module):
         self.encoder = EncoderBlock(in_channels=in_channels, model_depth=model_depth)
         self.decoder = DecoderBlock(out_channels=out_channels, model_depth=model_depth)
         if final_activation == "sigmoid":
-            self.sigmoid = nn.Sigmoid()
+            self.activation = nn.Sigmoid()
         else:
-            self.softmax = nn.Softmax(dim=1)
+            self.activation = nn.Softmax(dim=1)
 
     def forward(self, x):
         x, downsampling_features = self.encoder(x)
         x = self.decoder(x, downsampling_features)
-        x = self.sigmoid(x)
+        x = self.activation(x)
         print("Final output shape: ", x.shape)
         return x
 
